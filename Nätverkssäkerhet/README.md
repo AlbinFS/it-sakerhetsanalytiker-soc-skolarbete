@@ -1,17 +1,12 @@
-Uppgift
-Under kursens gång genomför du fyra praktiska workshoppar där du testar olika typer av webbattacker och sedan säkrar upp koden. Din inlämningsuppgift är att samla ditt arbete från dessa workshoppar i en rapport.
+Uppgiftsbeskrivning
+Du ska analysera en nätverksattack genom att kombinera teoretisk kunskap med praktisk PCAP-analys. Uppgiften består av fem delar som tillsammans visar din förståelse för nätverkssäkerhet.
 
-Workshopparna är:
+Del 1: Teoretisk attackanalys av Man-in-the-Middle (MITM)
 
-SQL-injektioner
-Cross-Site Scripting (XSS)
-Traversal-attacker
-Man-in-the-Middle (MITM) / monkey-patching
+Del 2: Praktisk PCAP-analys
 
+Del 3: Skyddsåtgärder med IDS/IPS
 
-Avslutande sammanfattning
-Avsluta rapporten med en sammanfattning där du:
+Del 4: Kortfrågor
 
-Rangordnar de fyra sårbarheterna efter allvarlighetsgrad.
-Ger dina rekommendationer: vilka åtgärder bör prioriteras och varför?
-Skriv som om du presenterar detta för en uppdragsgivare eller kund som inte är teknisk expert.
+Del 5: Incidentrapport
