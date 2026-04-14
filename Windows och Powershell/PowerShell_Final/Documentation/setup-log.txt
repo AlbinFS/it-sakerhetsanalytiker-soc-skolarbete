@@ -1,0 +1,12 @@
+Skapade mapp: C:\Users\albin\Desktop\ITS25 Powershell skripts\Scripts
+Skapade mapp: C:\Users\albin\Desktop\ITS25 Powershell skripts\Documentation
+Skapade mapp: C:\Users\albin\Desktop\ITS25 Powershell skripts\UserData
+Skapade mapp: C:\Users\albin\Desktop\ITS25 Powershell skripts\Backups
+Skapade mapp: C:\Users\albin\Desktop\ITS25 Powershell skripts\VMLogs
+Behörighet i Script mappen genererad
+Skapade välkomstfil i Scripts
+Skapade välkomstfil i Documentation
+Skapade välkomstfil i UserData
+Skapade välkomstfil i Backups
+Skapade välkomstfil i VMLogs
+Mappstruktur skapad den 09/25/2025 10:04:21
