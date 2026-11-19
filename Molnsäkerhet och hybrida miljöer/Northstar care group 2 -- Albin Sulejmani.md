@@ -72,7 +72,7 @@ Systemet separerar ansvarsområden. Frontend är utvecklad med React och Vite, o
 - **Byggprocessen:** Pipelinen bygger frontenden i `backend/wwwroot`. Det minskar komplexiteten eftersom bara ett paket behöver skickas till Azure App Service.
 - **Modulär lagring:** Logiken för lagring är isolerad från resten av applikationen. Det gör det enkelt att byta mellan lokal lagring och Azure Blob Storage med hjälp av miljövariabler, utan att ändra källkoden.
 
-![Arkitektur för webbappen Northstar Care och CI/CD-flödet](bilder/image1.png)
+![Arkitektur för webbappen Northstar Care och CI/CD-flödet](bilder/image1.jpg)
 
 ---
 
@@ -171,7 +171,7 @@ Pipelinen genererar också en artifact (`ci-report`) med säkerhetsresultaten oc
 
 Säker hantering av hemligheter är särskilt viktig i en molnmiljö. I vår pipeline har vi gått från att bara dölja data till att aktivt skanna efter den.
 
-![Application settings i App Service](bilder/image2.png)
+![Application settings i App Service](bilder/image2.jpg)
 
 När vi granskade koden hittade vi olika konfigurationsbehov i `server/index.js`, `server/config/runtimePaths.js` och `server/app.js`. Utöver variablerna i tabellen nedan hanterade vi `SCM_DO_BUILD_DURING_DEPLOYMENT`. Den säger åt Azure App Service att bygga koden och köra nödvändiga skript, som `npm install`, vid driftsättningen.
 
@@ -233,7 +233,7 @@ const result = assistantService.ask({ question, user: req.user });
 
 Det visar att `question` inte valideras och att användarinput skickas direkt vidare till servicelagret utan filtrering. Ogiltig eller extrem input kan alltså nå backendlogiken. Vi testade det genom att anropa `/api/assistant/ask` med fetch i webbläsarkonsolen, med en payload på 100 000 tecken:
 
-![Test med 100 000 tecken mot /api/assistant/ask](bilder/image3.png)
+![Test med 100 000 tecken mot /api/assistant/ask](bilder/image3.jpg)
 
 Requesten accepterades och returnerade ett giltigt svar. Med en payload på 1 000 000 tecken returnerade servern däremot HTTP 500 Internal Server Error. Det tyder på att inputstorleken inte begränsas tidigt i requestkedjan. Om ett konto blir hackat och missbrukas kan det leda till onödig resursförbrukning och instabilitet.
 
@@ -243,7 +243,7 @@ Vi testade också systemets robusthet med ett belastningstest i k6: ett skript s
 - **CPU time:** 3,52 s (låg CPU men hög latens)
 - **Totalt antal requests:** 453
 
-![App Service-metrics under belastningstestet](bilder/image4.png)
+![App Service-metrics under belastningstestet](bilder/image4.jpg)
 
 Systemet kraschade inte under belastningen, men latensen ökade kraftigt, vilket tyder på begränsad skalbarhet.
 
@@ -268,7 +268,7 @@ createCase: ({ payload, user }) => {
 
 Där identifierade vi en potentiell trust boundary violation. Vi anropade `/api/cases` direkt med fetch i webbläsarkonsolen, inloggade som `anna.support`:
 
-![Ärende skapat via direktanrop till /api/cases](bilder/image5.png)
+![Ärende skapat via direktanrop till /api/cases](bilder/image5.jpg)
 
 Requesten accepterades och returnerade ett giltigt svar. Ärendet skapades av anna.support men blev synligt bara för mikael.manager, vilket inte borde vara möjligt.
 
@@ -282,11 +282,11 @@ Först prioriterade vi problemen som pipelinen hittade, sedan de kritiska proble
 
 Pipelinen hittade inget kritiskt säkerhetsproblem, förutom fem sårbarheter med severity *moderate* från npm audit.
 
-![Resultat från npm audit i pipelinen](bilder/image6.png)
+![Resultat från npm audit i pipelinen](bilder/image6.jpg)
 
 När vi körde `npm audit` lokalt i `./Backend` och `./Frontend` fick vi fler detaljer och rekommendationer: dev-beroendena Vite och Vitest behövde uppdateras.
 
-![npm audit lokalt](bilder/image7.png)
+![npm audit lokalt](bilder/image7.jpg)
 
 #### Defender för webbappen
 
@@ -314,11 +314,11 @@ Defender hittade en hög och två låga risker gällande exponering mot internet
 
 1. **Token revocation:** Koden saknar rate-limiting, men den kör `authService.login` och returnerar 401 direkt om resultatet är falskt. En viktig styrka är att koden kontrollerar om en token har spärrats (`isTokenRevoked`). Det gör det möjligt att omedelbart göra stulna tokens obrukbara vid utloggning.
 
-   ![Kontroll av spärrade tokens](bilder/image8.png)
+   ![Kontroll av spärrade tokens](bilder/image8.jpg)
 
 2. **Automatiska säkerhetstester:** Vi integrerade fyra automatiska säkerhetstester i pipelinen: SAST, secrets scanning, DAST och dependency scanning. Tillsammans blir de ett starkt filter som stoppar sårbarheter innan de når molnet.
 
-   ![Säkerhetstesterna i pipelinen](bilder/image9.png)
+   ![Säkerhetstesterna i pipelinen](bilder/image9.jpg)
 
 3. **Managed identity:** Vi tog bort behovet av att spara känsliga lösenord för interna Azure-tjänster genom att aktivera systemtilldelad identitet. Webbappen har då bara de rättigheter den behöver, enligt Least Privilege-principen. Det aktiverades under *Inställningar → Identitet → Systemtilldelad*.
 
@@ -350,7 +350,7 @@ added 176 packages, and audited 177 packages in 6s
 
 - **Data retention i Blob:** För att minska risken att känslig data lagras för länge lade vi till en regel i Azure Lifecycle Management för `northstarstorage2`. Dokument som inte har ändrats på 365 dagar raderas. Det minskar exponeringen vid dataläckor och följer dataminimeringsprincipen.
 
-  ![Lifecycle management-regel](bilder/image10.png)
+  ![Lifecycle management-regel](bilder/image10.jpg)
 
 - **Redundans för lagringskontot:** Vi aktiverade geo-redundant lagring (GRS) som skydd mot tillfälliga hårdvarufel, nätverks- och strömavbrott och naturkatastrofer. Däremot kunde vi inte skapa backup-vaulten `BackupBlobGrupp2` (geo-redundant, soft delete med 14 dagars retention) för Azure Backup for blobs, på grund av saknade behörigheter.
 
